@@ -52,7 +52,7 @@ app.use(cors())
 //swagger static path
 
 const path = require('path');
-router.use('/swagger', express.static(path.join(__dirname,'node_modules','swagger-ui-dist')));
+app.use('/swagger', express.static(path.join(__dirname,'node_modules','swagger-ui-dist')));
 
 
 
