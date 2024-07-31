@@ -13,7 +13,7 @@
       "name": "ISC"
     }
   },
-  "host": "pizza-app-backend-ruddy.vercel.app:8000",
+  "host": "pizza-app-backend-ruddy.vercel.app",
   "basePath": "/",
   "schemes": [
     "https"
