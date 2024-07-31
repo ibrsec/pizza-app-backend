@@ -233,6 +233,59 @@
         }
       }
     },
+    "/users/createAdmin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create new Admin User  *",
+        "description": "Create a Admin User    </br></br>    Permission : <b>No permission</b>        </br></br>    extra field required for creating the admin user:</br> <b>adminkey: \"i_am_admin\"</b>    ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "test"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "test@test.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "TestTest1?"
+                },
+                "adminkey": {
+                  "type": "string",
+                  "example": "i_am_admin"
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password",
+                "adminkey"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
     "/orders/": {
       "get": {
         "tags": [

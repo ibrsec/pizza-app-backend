@@ -70,6 +70,56 @@ module.exports.user = {
       result: newUser,
     });
   },
+  createAdminUser: async (req, res) => {
+    /**
+         * #swagger.tags = ['Users']
+         * #swagger.summary = Create new Admin User
+         * #swagger.description = `Create a Admin User
+                                  </br></br>
+                                  Permission : <b>No permission</b>
+                                  
+                                  </br></br>
+                                  extra field required for creating the admin user:</br> <b>adminkey: "i_am_admin"</b>
+                                  `
+         * #swagger.parameters['body'] = {
+                in:'body',
+                required:true,
+                schema: {
+                  $username: 'test',
+                  $email: 'test@test.com',
+                  $password: 'TestTest1?',
+                  $adminkey: 'i_am_admin'
+            }
+             }
+
+         */
+    const { username, email, password, isActive, adminkey } = req.body;
+    if (!username || !email || !password || !adminkey) {
+      res.errorStatusCode = 400;
+      throw new Error(
+        "Bad request - username, email, password, adminkey fields are required!"
+      );
+    }
+
+    if(adminkey !== 'i_am_admin'){
+      res.errorStatusCode = 401;
+      throw new Error('Unauthorized - Admin user  creation is limited to who provides the correct adminkey !')
+    }
+
+    const newUser = await User.create({
+      username,
+      email,
+      password,
+      isActive,
+      isAdmin : true,
+    });
+
+    res.status(201).json({
+      error: false,
+      message: "A new user is created!",
+      result: newUser,
+    });
+  },
   read: async (req, res) => {
     /**
      * #swagger.tags = ['Users']

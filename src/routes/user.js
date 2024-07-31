@@ -13,10 +13,14 @@ router
   .route("/")
   .get(permissions.isLogin, user.list)
   .post(user.create);
-router
+
+  router
   .route("/:id")
   .get(permissions.isLogin, checkId, user.read)
   .put(permissions.isAdmin, checkId, user.update)
   .delete(permissions.isAdmin, checkId, user.delete)
+  
+  
+  router.post('/createAdmin', user.createAdminUser);
 /* ------------------------------------------------------- */
 module.exports = router;
