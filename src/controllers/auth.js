@@ -3,6 +3,7 @@
 const { passwordEncryptor } = require("../helpers/passwordEncrypt");
 const { User } = require("../models/user");
 const { Token } = require("../models/token");
+const jwt = require('jsonwebtoken')
 
 /* -------------------------------------------------------
     | FULLSTACK TEAM | NODEJS / EXPRESS |
@@ -47,12 +48,23 @@ module.exports.auth = {
       });
     }
 
+
+    const accessToken = jwt.sign({
+      userId:user?._id,
+      username:user?.username
+    },
+    process.env.ACCESSTOKEN_SECRETKEY,
+    {expiresIn:'1h'})
+
+
+
     res.json({
       error: false,
       message: "Login is OK!",
       result: {
         userId: tokenData.userId,
         token: tokenData?.token,
+        accessToken
       },
     });
   },
