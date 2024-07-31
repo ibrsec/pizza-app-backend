@@ -47,9 +47,7 @@ app.use(require('./src/middlewares/queryHandler'))
 
 //cors 
 const cors =  require('cors');
-app.use(cors({
-    origin:"http://localhost:8000"
-}))
+app.use(cors())
 
 
 
@@ -141,3 +139,6 @@ app.listen(PORT, () => console.log('http://127.0.0.1:' + PORT))
  * 
  * page size = session cooikies ile ekle
  */
+
+
+
