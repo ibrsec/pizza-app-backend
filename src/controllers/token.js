@@ -19,6 +19,7 @@ const { User } = require('../models/user');
 module.exports.token = {
   list: async (req, res) => {
     /**
+         * #swagger.ignore = true
          * #swagger.tags = ['Tokens']
          * #swagger.summary = List the tokens
          * #swagger.description = `List the all tokens
@@ -28,7 +29,10 @@ module.exports.token = {
                 <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
                 <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
                 <li>URL/?<b>page=2&limit=1</b></li>
-            </ul>`
+            </ul>
+                                  </br></br>
+                                  Permission : <b>Admin User</b>
+                                  `
 
          */
     const tokens = await res.getModelList(Token,{},"userId");
@@ -42,9 +46,12 @@ module.exports.token = {
   },
   create: async (req, res) => {
     /**
+         * #swagger.ignore = true
          * #swagger.tags = ['Tokens']
          * #swagger.summary = Create new Token
-         * #swagger.description = `Create a new Token`
+         * #swagger.description = `Create a new Token
+                                  </br></br>
+                                  Permission : <b>Admin User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -79,9 +86,12 @@ module.exports.token = {
   },
   read: async (req, res) => {
     /**
+         * #swagger.ignore = true
      * #swagger.tags = ['Tokens']
      * #swagger.summary = Get one Token
-     * #swagger.description = `Get one Token`
+     * #swagger.description = `Get one Token
+                                  </br></br>
+                                  Permission : <b>Admin User</b>`
      */
     const tokenData = await Token.findOne({ _id: req.params.id });
     if (!tokenData) {
@@ -97,9 +107,12 @@ module.exports.token = {
   },
   update: async (req, res) => {
     /**
+         * #swagger.ignore = true
          * #swagger.tags = ['Tokens']
          * #swagger.summary = Update new Token
-         * #swagger.description = `Update a new Token`
+         * #swagger.description = `Update a new Token
+                                  </br></br>
+                                  Permission : <b>Admin User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -147,9 +160,12 @@ module.exports.token = {
   },
   delete: async (req, res) => {
     /**
+     * #swagger.ignore = true
      * #swagger.tags = ['Tokens']
      * #swagger.summary = Delete one Token
-     * #swagger.description = `Delete one Token`
+     * #swagger.description = `Delete one Token
+                                  </br></br>
+                                  Permission : <b>Admin User</b>`
      */
     const tokenData = await Token.findOne({ _id: req.params.id });
     if (!tokenData) {

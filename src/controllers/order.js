@@ -20,7 +20,9 @@ module.exports.order = {
                 <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
                 <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
                 <li>URL/?<b>page=2&limit=1</b></li>
-            </ul>`
+            </ul>
+            </br></br>
+            Permission : <b>Normal User</b>`
 
          */
     const orders = await res.getModelList(Order, {}, ["pizzaId", "userId"]);
@@ -37,7 +39,9 @@ module.exports.order = {
          * #swagger.tags = ['Orders']
          * #swagger.summary = Create new Order
          * #swagger.description = `Create a new Order</br>
-         *                         Price comes from pizzas collection</br>Valid pizza sizes : 'Small', 'Medium', 'Large', 'Xlarge'</br>` 
+         *                         Price comes from pizzas collection</br>Valid pizza sizes : 'Small', 'Medium', 'Large', 'Xlarge'</br>
+                                  </br></br>
+                                  Permission : <b>Normal User</b>` 
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -90,7 +94,9 @@ module.exports.order = {
     /**
      * #swagger.tags = ['Orders']
      * #swagger.summary = Get one Order
-     * #swagger.description = `Get one Order`
+     * #swagger.description = `Get one Order
+                                </br></br>
+                                Permission : <b>Normal User</b>`
      */
     const orderData = await Order.findOne({ _id: req.params.id });
     if (!orderData) {
@@ -108,7 +114,9 @@ module.exports.order = {
     /**
          * #swagger.tags = ['Orders']
          * #swagger.summary = Update new Order
-         * #swagger.description = `Update a new Order`
+         * #swagger.description = `Update a new Order
+                                </br></br>
+                                Permission : <b>Admin User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -180,7 +188,9 @@ module.exports.order = {
     /**
      * #swagger.tags = ['Orders']
      * #swagger.summary = Delete one Order
-     * #swagger.description = `Delete one Order`
+     * #swagger.description = `Delete one Order
+                                </br></br>
+                                Permission : <b>Admin User</b>`
      */
     const orderData = await Order.findOne({ _id: req.params.id });
     if (!orderData) {

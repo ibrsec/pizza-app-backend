@@ -6,14 +6,18 @@
 const router = require("express").Router();
 const { token } = require("../controllers/token");
 const checkId = require("../middlewares/checkId");
+const { permissions } = require("../middlewares/permissions");
+
 /* ------------------------------------------------------- */
 
-router.route("/")
-.get(token.list).post(token.create);
+router
+  .route("/")
+  .get(permissions.isAdmin, token.list)
+  .post(permissions.isAdmin, token.create);
 router
   .route("/:id")
-  .get(checkId, token.read)
-  .put(checkId, token.update)
-  .delete(checkId, token.delete);
+  .get(permissions.isAdmin, checkId, token.read)
+  .put(permissions.isAdmin, checkId, token.update)
+  .delete(permissions.isAdmin, checkId, token.delete);
 /* ------------------------------------------------------- */
 module.exports = router;

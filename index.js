@@ -40,7 +40,7 @@ app.use(express.json())
 app.use(require('./src/middlewares/logger'))
 
 // Auhentication:
-// app.use(require('./src/middlewares/authentication'))
+app.use(require('./src/middlewares/authentication'))
 
 // findSearchSortPage / res.getModelList:
 app.use(require('./src/middlewares/queryHandler'))
@@ -126,7 +126,7 @@ app.listen(PORT, () => console.log('http://127.0.0.1:' + PORT))
  *  - login
  *  - current
  *  - logout
- * authenticatio mw
+ * authentication mw
  * permissions
  *  isLogin
  *  isAdmin
