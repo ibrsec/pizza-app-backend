@@ -18,7 +18,10 @@ module.exports.user = {
                 <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
                 <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
                 <li>URL/?<b>page=2&limit=1</b></li>
-            </ul>`
+            </ul>
+            </br></br>
+            Permission : <b>Normal User</b>
+            `
 
          */
     const users = await res.getModelList(User);
@@ -34,7 +37,9 @@ module.exports.user = {
     /**
          * #swagger.tags = ['Users']
          * #swagger.summary = Create new User
-         * #swagger.description = `Create a new User`
+         * #swagger.description = `Create a new User
+                                  </br></br>
+                                  Permission : <b>No permission</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -65,11 +70,63 @@ module.exports.user = {
       result: newUser,
     });
   },
+  createAdminUser: async (req, res) => {
+    /**
+         * #swagger.tags = ['Users']
+         * #swagger.summary = Create new Admin User
+         * #swagger.description = `Create a Admin User
+                                  </br></br>
+                                  Permission : <b>No permission</b>
+                                  
+                                  </br></br>
+                                  extra field required for creating the admin user:</br> <b>adminkey: "i_am_admin"</b>
+                                  `
+         * #swagger.parameters['body'] = {
+                in:'body',
+                required:true,
+                schema: {
+                  $username: 'test',
+                  $email: 'test@test.com',
+                  $password: 'TestTest1?',
+                  $adminkey: 'i_am_admin'
+            }
+             }
+
+         */
+    const { username, email, password, isActive, adminkey } = req.body;
+    if (!username || !email || !password || !adminkey) {
+      res.errorStatusCode = 400;
+      throw new Error(
+        "Bad request - username, email, password, adminkey fields are required!"
+      );
+    }
+
+    if(adminkey !== 'i_am_admin'){
+      res.errorStatusCode = 401;
+      throw new Error('Unauthorized - Admin user  creation is limited to who provides the correct adminkey !')
+    }
+
+    const newUser = await User.create({
+      username,
+      email,
+      password,
+      isActive,
+      isAdmin : true,
+    });
+
+    res.status(201).json({
+      error: false,
+      message: "A new user is created!",
+      result: newUser,
+    });
+  },
   read: async (req, res) => {
     /**
      * #swagger.tags = ['Users']
      * #swagger.summary = Get one User
-     * #swagger.description = `Get one User`
+     * #swagger.description = `Get one User
+                              </br></br>
+                              Permission : <b>Normal User</b>`
      */
     const userData = await User.findOne({ _id: req.params.id });
     if (!userData) {
@@ -87,7 +144,9 @@ module.exports.user = {
     /**
          * #swagger.tags = ['Users']
          * #swagger.summary = Update new User
-         * #swagger.description = `Update a new User`
+         * #swagger.description = `Update a new User
+                              </br></br>
+                              Permission : <b>Admin User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -130,7 +189,9 @@ module.exports.user = {
     /**
      * #swagger.tags = ['Users']
      * #swagger.summary = Delete one User
-     * #swagger.description = `Delete one User`
+     * #swagger.description = `Delete one User
+                              </br></br>
+                              Permission : <b>Admin User</b>`
      */
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {

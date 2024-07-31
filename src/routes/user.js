@@ -1,16 +1,26 @@
-"use strict"
-
+"use strict";
 
 /* -------------------------------------------------------
 | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
-const router = require('express').Router()
-const { user } = require('../controllers/user')
-const checkId = require('../middlewares/checkId')
+const router = require("express").Router();
+const { user } = require("../controllers/user");
+const checkId = require("../middlewares/checkId");
+const { permissions } = require("../middlewares/permissions");
 /* ------------------------------------------------------- */
 
-router.route('/').get(user.list).post(user.create)
-router.route('/:id').get(checkId,user.read).put(checkId,user.update).delete(checkId,user.delete)
-.put(checkId,user.update).delete(checkId,user.delete)
+router
+  .route("/")
+  .get(permissions.isLogin, user.list)
+  .post(user.create);
+
+  router
+  .route("/:id")
+  .get(permissions.isLogin, checkId, user.read)
+  .put(permissions.isAdmin, checkId, user.update)
+  .delete(permissions.isAdmin, checkId, user.delete)
+  
+  
+  router.post('/createAdmin', user.createAdminUser);
 /* ------------------------------------------------------- */
-module.exports = router 
+module.exports = router;

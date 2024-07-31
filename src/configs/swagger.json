@@ -40,13 +40,80 @@
     "application/json"
   ],
   "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Login  *",
+        "description": "Login with Email/username and password.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout  *",
+        "description": "Logout with token or without token  *",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/users/": {
       "get": {
         "tags": [
           "Users"
         ],
         "summary": "List the users  *",
-        "description": "List the all users  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
+        "description": "List the all users  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>  </br></br>  Permission : <b>Normal User</b>  ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -58,8 +125,13 @@
           "Users"
         ],
         "summary": "Create new User  *",
-        "description": "Create a new User",
+        "description": "Create a new User    </br></br>    Permission : <b>No permission</b>",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -82,70 +154,17 @@
           "Users"
         ],
         "summary": "Get one User  *",
-        "description": "Get one User",
+        "description": "Get one User   </br></br>   Permission : <b>Normal User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/tokens/": {
-      "get": {
-        "tags": [
-          "Tokens"
-        ],
-        "summary": "List the tokens  *",
-        "description": "List the all tokens  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Tokens"
-        ],
-        "summary": "Create new Token  *",
-        "description": "Create a new Token",
-        "parameters": [
+          },
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Token"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          }
-        }
-      }
-    },
-    "/tokens/{id}": {
-      "get": {
-        "tags": [
-          "Tokens"
-        ],
-        "summary": "Get one Token  *",
-        "description": "Get one Token",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -157,10 +176,10 @@
       },
       "put": {
         "tags": [
-          "Tokens"
+          "Users"
         ],
-        "summary": "Update new Token  *",
-        "description": "Update a new Token",
+        "summary": "Update new User  *",
+        "description": "Update a new User   </br></br>   Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
@@ -169,11 +188,16 @@
             "type": "string"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Token"
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -185,15 +209,20 @@
       },
       "delete": {
         "tags": [
-          "Tokens"
+          "Users"
         ],
-        "summary": "Delete one Token  *",
-        "description": "Delete one Token",
+        "summary": "Delete one User  *",
+        "description": "Delete one User   </br></br>   Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -204,13 +233,73 @@
         }
       }
     },
+    "/users/createAdmin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create new Admin User  *",
+        "description": "Create a Admin User    </br></br>    Permission : <b>No permission</b>        </br></br>    extra field required for creating the admin user:</br> <b>adminkey: \"i_am_admin\"</b>    ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "test"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "test@test.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "TestTest1?"
+                },
+                "adminkey": {
+                  "type": "string",
+                  "example": "i_am_admin"
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password",
+                "adminkey"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
     "/orders/": {
       "get": {
         "tags": [
           "Orders"
         ],
         "summary": "List the orders  *",
-        "description": "List the all orders   * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
+        "description": "List the all orders   * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>  </br></br>  Permission : <b>Normal User</b>",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -222,8 +311,13 @@
           "Orders"
         ],
         "summary": "Create new Order  *",
-        "description": "Create a new Order</br>  *  Price comes from pizzas collection</br>Valid pizza sizes : 'Small', 'Medium', 'Large', 'Xlarge'</br>",
+        "description": "Create a new Order</br>  *  Price comes from pizzas collection</br>Valid pizza sizes : 'Small', 'Medium', 'Large', 'Xlarge'</br>    </br></br>    Permission : <b>Normal User</b>",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -246,12 +340,17 @@
           "Orders"
         ],
         "summary": "Get one Order  *",
-        "description": "Get one Order",
+        "description": "Get one Order   </br></br>   Permission : <b>Normal User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -266,12 +365,17 @@
           "Orders"
         ],
         "summary": "Update new Order  *",
-        "description": "Update a new Order",
+        "description": "Update a new Order   </br></br>   Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -294,12 +398,17 @@
           "Orders"
         ],
         "summary": "Delete one Order  *",
-        "description": "Delete one Order",
+        "description": "Delete one Order   </br></br>   Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -316,7 +425,14 @@
           "Pizzas"
         ],
         "summary": "List the pizzas  *",
-        "description": "List the all pizzas  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
+        "description": "List the all pizzas  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>  </br></br>  Permission : <b>Normal User</b>",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -328,8 +444,13 @@
           "Pizzas"
         ],
         "summary": "Create new Pizza  *",
-        "description": "Create a new Pizza",
+        "description": "Create a new Pizza    </br></br>    Permission : <b>Normal User</b>",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -352,12 +473,17 @@
           "Pizzas"
         ],
         "summary": "Get one Pizza  *",
-        "description": "Get one Pizza",
+        "description": "Get one Pizza   </br></br>   Permission : <b>Normal User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -372,12 +498,17 @@
           "Pizzas"
         ],
         "summary": "Update new Pizza  *",
-        "description": "Update a new Pizza",
+        "description": "Update a new Pizza    </br></br>    Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -400,12 +531,17 @@
           "Pizzas"
         ],
         "summary": "Delete one Pizza  *",
-        "description": "Delete one Pizza",
+        "description": "Delete one Pizza    </br></br>    Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -422,7 +558,14 @@
           "Toppings"
         ],
         "summary": "List the toppings  *",
-        "description": "List the all toppings  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
+        "description": "List the all toppings  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>  </br></br>  Permission : <b>Normal User</b>  ",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -434,8 +577,13 @@
           "Toppings"
         ],
         "summary": "Create new Topping  *",
-        "description": "Create a new Topping",
+        "description": "Create a new Topping  </br></br>  Permission : <b>Normal User</b>",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -458,12 +606,17 @@
           "Toppings"
         ],
         "summary": "Get one Topping  *",
-        "description": "Get one Topping",
+        "description": "Get one Topping  </br></br>  Permission : <b>Normal User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -478,12 +631,17 @@
           "Toppings"
         ],
         "summary": "Update new Topping  *",
-        "description": "Update a new Topping",
+        "description": "Update a new Topping  </br></br>  Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -506,12 +664,17 @@
           "Toppings"
         ],
         "summary": "Delete one Topping  *",
-        "description": "Delete one Topping",
+        "description": "Delete one Topping  </br></br>  Permission : <b>Admin User</b>",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],

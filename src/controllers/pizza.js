@@ -19,7 +19,9 @@ module.exports.pizza = {
                 <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
                 <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
                 <li>URL/?<b>page=2&limit=1</b></li>
-            </ul>`
+            </ul>
+            </br></br>
+            Permission : <b>Normal User</b>`
 
          */
     const pizzas = await res.getModelList(Pizza, {}, "toppingIds");
@@ -35,7 +37,9 @@ module.exports.pizza = {
     /**
          * #swagger.tags = ['Pizzas']
          * #swagger.summary = Create new Pizza
-         * #swagger.description = `Create a new Pizza`
+         * #swagger.description = `Create a new Pizza
+                                  </br></br>
+                                  Permission : <b>Normal User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -77,7 +81,9 @@ module.exports.pizza = {
     /**
      * #swagger.tags = ['Pizzas']
      * #swagger.summary = Get one Pizza
-     * #swagger.description = `Get one Pizza`
+     * #swagger.description = `Get one Pizza
+                              </br></br>
+                              Permission : <b>Normal User</b>`
      */
     const pizzaData = await Pizza.findOne({ _id: req.params.id });
     if (!pizzaData) {
@@ -95,7 +101,9 @@ module.exports.pizza = {
     /**
          * #swagger.tags = ['Pizzas']
          * #swagger.summary = Update new Pizza
-         * #swagger.description = `Update a new Pizza`
+         * #swagger.description = `Update a new Pizza
+                                  </br></br>
+                                  Permission : <b>Admin User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -150,7 +158,9 @@ module.exports.pizza = {
     /**
      * #swagger.tags = ['Pizzas']
      * #swagger.summary = Delete one Pizza
-     * #swagger.description = `Delete one Pizza`
+     * #swagger.description = `Delete one Pizza
+                                  </br></br>
+                                  Permission : <b>Admin User</b>`
      */
     const pizzaData = await Pizza.findOne({ _id: req.params.id });
     if (!pizzaData) {
