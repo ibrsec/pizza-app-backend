@@ -204,6 +204,218 @@
         }
       }
     },
+    "/orders/": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "List the orders  *",
+        "description": "List the all orders   * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Create new Order  *",
+        "description": "Create a new Order</br>  *  Price comes from pizzas collection</br>Valid pizza sizes : 'Small', 'Medium', 'Large', 'Xlarge'</br>",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Get one Order  *",
+        "description": "Get one Order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Update new Order  *",
+        "description": "Update a new Order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Delete one Order  *",
+        "description": "Delete one Order",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/pizzas/": {
+      "get": {
+        "tags": [
+          "Pizzas"
+        ],
+        "summary": "List the pizzas  *",
+        "description": "List the all pizzas  * You can send query with endpoint for search[], sort[], page and limit.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>  <li>URL/?<b>page=2&limit=1</b></li>  </ul>",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pizzas"
+        ],
+        "summary": "Create new Pizza  *",
+        "description": "Create a new Pizza",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pizza"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/pizzas/{id}": {
+      "get": {
+        "tags": [
+          "Pizzas"
+        ],
+        "summary": "Get one Pizza  *",
+        "description": "Get one Pizza",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Pizzas"
+        ],
+        "summary": "Update new Pizza  *",
+        "description": "Update a new Pizza",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Pizza"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pizzas"
+        ],
+        "summary": "Delete one Pizza  *",
+        "description": "Delete one Pizza",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/toppings/": {
       "get": {
         "tags": [
@@ -493,6 +705,187 @@
             "required": {
               "type": "boolean",
               "example": true
+            }
+          }
+        }
+      }
+    },
+    "Pizza": {
+      "type": "object",
+      "properties": {
+        "toppingIds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "function"
+              },
+              "ref": {
+                "type": "string",
+                "example": "Topping"
+              }
+            }
+          }
+        },
+        "name": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "unique": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "validate": {
+              "type": "array",
+              "example": [
+                null,
+                "Please enter a valid url"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "pizzaId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Pizza"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "size": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "enum": {
+              "type": "array",
+              "example": [
+                "Small",
+                "Medium",
+                "Large",
+                "Xlarge"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "quantity": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "number",
+              "example": 1
+            }
+          }
+        },
+        "price": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "amount": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "default": {
+              "type": "function"
+            },
+            "transform": {
+              "type": "function"
             }
           }
         }

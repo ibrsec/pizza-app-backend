@@ -44,6 +44,7 @@ const document = {
 		"User": require('./src/models/user').User.schema.obj,
 		"Topping": require('./src/models/topping').Topping.schema.obj,
 		"Pizza": require('./src/models/pizza').Pizza.schema.obj,
+		"Order": require('./src/models/order').Order.schema.obj,
 	}
 }
 

@@ -7,7 +7,7 @@ const { mongoose } = require("../configs/dbConnection");
 
 const PizzaSchema = new mongoose.Schema(
   {
-    toppingId: [
+    toppingIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Topping",
@@ -23,12 +23,23 @@ const PizzaSchema = new mongoose.Schema(
     image:{
         type:String,
         trim:true,
+        validate: [
+            (image)=>{
+                const regex = /^(https?:\/\/)[^\s]+/;
+                if(regex.test(image)){
+                    return true;
+                }else{
+                    return false;
+                }
+            },
+            'Please enter a valid url'
+        ]
 
     },
     price:{
         type:Number,
         required:true,
-        
+
     }
   },
   {

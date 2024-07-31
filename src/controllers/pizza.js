@@ -1,22 +1,11 @@
-"use strict"
+"use strict";
+const { mongoose } = require("../configs/dbConnection");
 /* -------------------------------------------------------
     | FULLSTACK TEAM | NODEJS / EXPRESS |
 ------------------------------------------------------- */
 
-
-
-"use strict"
-/* -------------------------------------------------------
-    | FULLSTACK TEAM | NODEJS / EXPRESS |
-------------------------------------------------------- */
-
- 
-
-const {Pizza} = require('../models/pizza'); 
-
-/* -------------------------------------------------------
-    | FULLSTACK TEAM | NODEJS / EXPRESS |
-------------------------------------------------------- */
+const { Pizza } = require("../models/pizza");
+const { Topping } = require("../models/topping");
 
 module.exports.pizza = {
   list: async (req, res) => {
@@ -33,8 +22,8 @@ module.exports.pizza = {
             </ul>`
 
          */
-    const pizzas = await res.getModelList(Pizza,{},'toppingIds'); 
- 
+    const pizzas = await res.getModelList(Pizza, {}, "toppingIds");
+
     res.json({
       error: false,
       message: "Pizzas are listed!",
@@ -56,26 +45,32 @@ module.exports.pizza = {
              }
 
          */
-    const { name, image, price,toppingIds } = req.body;
-    if (!name || !price ) {
+    const { name, image, price, toppingIds } = req.body;
+    if (!name || !price) {
       res.errorStatusCode = 400;
-      throw new Error(
-        "Bad request - name and price fields are required!"
-      );
+      throw new Error("Bad request - name and price fields are required!");
     }
 
-    for(let topping of toppingIds){
-        console.log(topping); 
-        tamburdasin
+    for (let topping of toppingIds) {
+      if(!mongoose.Types.ObjectId.isValid(topping)){
+        res.errorStatusCode = 400;
+        throw new Error('Invalid id type! - topping id type should be objectId type.')
+      }
+      const data = await Topping.findOne({ _id: topping });
+      if (!data) {
+        res.errorStatusCode = 404;
+        throw new Error(
+          "Not Found - Topping not found on Toppings!: toppingid:" + topping
+        );
+      }
     }
- 
 
-    // const newPizza = await Pizza.create({name});
+    const newPizza = await Pizza.create({ name, image, price, toppingIds });
 
     res.status(201).json({
       error: false,
       message: "A new pizza is created!",
-    //   result: newPizza,
+      result: newPizza,
     });
   },
   read: async (req, res) => {
@@ -110,16 +105,26 @@ module.exports.pizza = {
              }
 
          */
-    const { name } = req.body;
-    if (!name) {
+    const { name, image, price, toppingIds } = req.body;
+    if (!name || !price) {
       res.errorStatusCode = 400;
-      throw new Error(
-        "Bad request - name filed is required!"
-      );
+      throw new Error("Bad request - name and price fields are required!");
     }
- 
 
-    
+    for (let topping of toppingIds) {
+        if(!mongoose.Types.ObjectId.isValid(topping)){
+            res.errorStatusCode = 400;
+            throw new Error('Invalid id type! - topping id type should be objectId type.')
+          }
+      const data = await Topping.findOne({ _id: topping });
+      if (!data) {
+        res.errorStatusCode = 404;
+        throw new Error(
+          "Not Found - Topping not found on Toppings!: toppingid:" + topping
+        );
+      }
+    }
+
     const pizzaData = await Pizza.findOne({ _id: req.params.id });
     if (!pizzaData) {
       res.errorStatusCode = 404;
@@ -128,7 +133,7 @@ module.exports.pizza = {
 
     const { modifiedCount } = await Pizza.updateOne(
       { _id: req.params.id },
-      {name},
+      { name, image, price, toppingIds },
       { runValidators: true }
     );
     if (modifiedCount < 1) {
@@ -152,13 +157,11 @@ module.exports.pizza = {
       res.errorStatusCode = 404;
       throw new Error("Pizza not found!");
     }
-    const { deletedCount } = await Pizza.deleteOne(
-        { _id: req.params.id }
-      );
-      if (deletedCount < 1) {
-        res.errorStatusCode = 500;
-        throw new Error("Something went wrong - issue at the end!");
-      }
+    const { deletedCount } = await Pizza.deleteOne({ _id: req.params.id });
+    if (deletedCount < 1) {
+      res.errorStatusCode = 500;
+      throw new Error("Something went wrong - issue at the end!");
+    }
 
     res.sendStatus(204);
   },
