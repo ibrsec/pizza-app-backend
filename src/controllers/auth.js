@@ -3,7 +3,7 @@
 const { passwordEncryptor } = require("../helpers/passwordEncrypt");
 const { User } = require("../models/user");
 const { Token } = require("../models/token");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 /* -------------------------------------------------------
     | FULLSTACK TEAM | NODEJS / EXPRESS |
@@ -48,15 +48,28 @@ module.exports.auth = {
       });
     }
 
+    const accessData = {
+      userId: user?._id,
+      username: user?.username,
+      isAdmin: user?.isAdmin,
+      isActive: user?.isActive,
+    };
 
-    const accessToken = jwt.sign({
-      userId:user?._id,
-      username:user?.username
-    },
-    process.env.ACCESSTOKEN_SECRETKEY,
-    {expiresIn:'1h'})
+    const accessToken = jwt.sign(
+      accessData,
+      process.env.ACCESSTOKEN_SECRETKEY,
+      { expiresIn: "30m" }
+    );
 
-
+    const refreshData = {
+      username: user?.username,
+      password: user?.password,
+    };
+    const refreshToken = jwt.sign(
+      refreshData,
+      process.env.REFRESHTOKEN_SECRETKEY,
+      { expiresIn: "1d" }
+    );
 
     res.json({
       error: false,
@@ -64,9 +77,64 @@ module.exports.auth = {
       result: {
         userId: tokenData.userId,
         token: tokenData?.token,
-        accessToken
+        bearer: {
+          accessToken,
+          refreshToken,
+        },
       },
     });
+  },
+  refresh: async (req, res) => {
+    /**
+     * #swagger.tags = ['Authentication'],
+     * #swagger.summary = Refresh
+     * #swagger.description = Refresh the access token with refresh token which comes from login post.
+     */
+    const {bearer} = req.body;
+    const {refreshToken} = bearer;
+    if (!refreshToken) {
+      res.errorStatusCode = 400;
+      throw new Error("Please enter the refresh token!");
+    }
+
+    const decodedRefreshData = await jwt.verify(
+      refreshToken,
+      process.env.REFRESHTOKEN_SECRETKEY
+    );
+    console.log(decodedRefreshData);
+
+    const user = await User.findOne({ username: decodedRefreshData?.username });
+    if (!user) {
+      res.errorStatusCode = 401;
+      throw new Error("Unauthorized - user not found!");
+    }
+
+    if(user?.password !== decodedRefreshData.password){
+      res.errorStatusCode = 401;
+      throw new Error("Unauthorized - Invalid password!");
+
+    }
+    const accessData = {
+      userId: user?._id,
+      username: user?.username,
+      isAdmin: user?.isAdmin,
+      isActive: user?.isActive,
+    };
+    const accessToken =  jwt.sign(
+      accessData,
+      process.env.ACCESSTOKEN_SECRETKEY,
+      {
+        expiresIn:"30m"
+      }
+    )
+    res.json({
+      error:false,
+      message:"refresh is OK!",
+      bearer:{
+        accessToken
+      }
+    })
+
   },
   logout: async (req, res) => {
     /**
@@ -75,9 +143,9 @@ module.exports.auth = {
      * #swagger.description = Logout with token or without token
      *
      */
-let data ;
+    let data;
     if (req.token) {
-     data = await Token.deleteOne({ token: req.token });
+      data = await Token.deleteOne({ token: req.token });
     }
     req.user = null;
     req.token = null;
@@ -85,7 +153,7 @@ let data ;
     res.json({
       error: false,
       message: "Logout is OK!",
-      data
+      data,
     });
   },
 };

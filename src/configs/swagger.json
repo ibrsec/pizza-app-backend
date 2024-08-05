@@ -78,6 +78,39 @@
         }
       }
     },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Refresh  *",
+        "description": "Refresh the access token with refresh token which comes from login post.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "bearer": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/auth/logout": {
       "get": {
         "tags": [
@@ -178,7 +211,7 @@
           "Users"
         ],
         "summary": "Update new User  *",
-        "description": "Update a new User   </br></br>   Permission : <b>Admin User</b>",
+        "description": "Update a new User   </br></br>   Permission : <b>Normal User</b>",
         "parameters": [
           {
             "name": "id",
@@ -211,7 +244,7 @@
           "Users"
         ],
         "summary": "Delete one User  *",
-        "description": "Delete one User   </br></br>   Permission : <b>Admin User</b>",
+        "description": "Delete one User   </br></br>   Permission : <b>Normal User</b>",
         "parameters": [
           {
             "name": "id",

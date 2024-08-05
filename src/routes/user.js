@@ -17,8 +17,8 @@ router
   router
   .route("/:id")
   .get(permissions.isLogin, checkId, user.read)
-  .put(permissions.isAdmin, checkId, user.update)
-  .delete(permissions.isAdmin, checkId, user.delete)
+  .put(permissions.isLogin, checkId, user.update)
+  .delete(permissions.isLogin, checkId, user.delete)
   
   
   router.post('/createAdmin', user.createAdminUser);

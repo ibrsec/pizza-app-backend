@@ -146,7 +146,7 @@ module.exports.user = {
          * #swagger.summary = Update new User
          * #swagger.description = `Update a new User
                               </br></br>
-                              Permission : <b>Admin User</b>`
+                              Permission : <b>Normal User</b>`
          * #swagger.parameters['body'] = {
                 in:'body',
                 required:true,
@@ -191,7 +191,7 @@ module.exports.user = {
      * #swagger.summary = Delete one User
      * #swagger.description = `Delete one User
                               </br></br>
-                              Permission : <b>Admin User</b>`
+                              Permission : <b>Normal User</b>`
      */
     const user = await User.findOne({ _id: req.params.id });
     if (!user) {
